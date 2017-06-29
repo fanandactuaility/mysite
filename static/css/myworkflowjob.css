@@ -1,0 +1,32 @@
+/*.selectopj {
+    width: 600px;
+    margin: 0 auto;
+    text-align: center;
+}
+*/.select1,.select2,.select3,.select4{
+    width: 550px;
+}
+
+
+.Type2, .Type3,.Type4 {
+    display: none;
+}
+/*隐藏节点*/
+#wf {
+    display: none;
+}
+
+
+/*用户选择页面*/
+
+/*首页值班表浮动效果*/
+.right-float-box-md {
+    position: fixed;
+    top: 60px;
+    right: 7px;
+}
+.right-float-box-xs {
+    position: fixed;
+    top: 110px;
+    right: 7px;
+}

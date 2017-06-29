@@ -1,0 +1,127 @@
+{% extends ip_env|yesno:"" %}
+
+{%load staticfiles%}
+
+{% block css%}
+    <link rel="stylesheet" href="{% static "bootstrap/css/bootstrap.min.css" %}" xmlns="http://www.w3.org/1999/html"
+          xmlns="http://www.w3.org/1999/html" xmlns="http://www.w3.org/1999/html">
+	<link rel="stylesheet" href="{% static "css/font-awesome.min.css" %}">
+	<link rel="stylesheet" href="{% static "dist/css/AdminLTE.min.css" %}">
+	<link rel="stylesheet" href="{% static "dist/css/skins/_all-skins.min.css" %}">
+	<link rel="stylesheet" href="{% static "plugins/iCheck/flat/blue.css" %}">
+	<link rel="stylesheet" href="{%static "css/ionicons.min.css" %}">
+ 	<link rel="stylesheet" href="{% static "plugins/datatables/dataTables.bootstrap.css"%}">
+    <link rel="stylesheet" href="{%static "css/select2.min.css" %}">
+{#	<link href="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/css/select2.min.css" rel="stylesheet" />#}
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="{% static "js/html5shiv.min.js" %}"></script>
+        <script src="{% static "js/respond.min.js" %}"></script>
+    <![endif]-->
+    <style type="text/css">
+    .head-box{min-height:180px;}
+    #svn-content{display: none}
+    .notes {
+        background-attachment: local;
+        background-image: linear-gradient(to right, white 10px, transparent 10px),
+                          linear-gradient(to left, white 10px, transparent 10px),
+                          repeating-linear-gradient(white, white 30px, #ccc 30px, #ccc 31px, white 31px);
+                          repeating-linear-gradient(white, white 30px, #ccc 30px, #ccc 31px, white 31px);
+    line-height: 25px;
+{#    padding: 8px 10px;#}
+}
+    </style>
+{% endblock %}
+{% block content %}
+    <section class="content-wrapper">
+        <section class="content-header">
+          <h1>
+              <p>所处环境: <font color="red">{{ env_chinese }}</font></p>
+              <p>上传文件: {{ result.file_name }}</p>
+              <p>路径: {{ result.file_dir }}</p>
+          </h1>
+          <ol class="breadcrumb">
+              <li class="active"><a href="/"><i class="fa fa-dashboard"></i> 首页</a></li>
+              <li>文件上传</li>
+          </ol>
+        </section>
+
+        <section class="content">
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="box-body">
+{#                        <form class="form-horizontal" name="edit_record" role="form" method="post">#}
+{#                            {% csrf_token %}#}
+                            <input type="hidden" name="id" value="{{ result.id }}">
+                            <div class="form-group">
+                                <textarea name="content" id="content" rows="{{ row_content }}" class="notes" style="width: 100%;font-size:13pt;line-height:23pt">{{ result.content }}
+                                </textarea>
+                            </div>
+
+                            <div class="text-center">
+                                <button class="btn btn-primary" role="button" name="file_update" onclick="upload_file({{ result.id }})"><i class="fa fa-fw fa-check"></i>上传</button>
+                                <a href="/configfile/edit/{{ result.id }}/" class="btn btn-primary" role="button"><i class="fa fa-fw fa-check"></i>返回编辑页面</a>
+                            </div>
+{#                        </form>#}
+                    </div>
+                </div>
+            </div>
+        </section>
+    </section><!-- /.content -->
+{% endblock %}
+{% block js %}
+    <script src="{%static "plugins/jQuery/jQuery-2.1.4.min.js" %}"></script>
+    <script src="{%static "js/auto-line-number.js" %}"></script>
+    <script src="{% static "js/jquery-ui.min.js" %}"></script>
+    <script src="{%static "dist/js/app.min.js" %}"></script>
+    <script src="{% static "plugins/datatables/jquery.dataTables.min.js" %}"></script>
+    <script src="{% static "plugins/datatables/dataTables.bootstrap.min.js" %}"></script>
+    <script src="{% static "js/myqccr.js" %}"></script>
+    <script src="{% static "js/select2.min.js" %}"></script>
+	<script src="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script>
+        $("#content").setTextareaCount({
+		    color: "#",
+		    display: "inline-block"
+	    });
+        $('select').select2();
+        $("#configmenu").addClass("active");
+        if ("{{ result.conf_type }}" == '1') {
+            $("#master-file").addClass("active");
+        } else if ("{{ result.conf_type }}" == '2') {
+            $("#vhosts-file").addClass("active");
+        } else if ("{{ result.conf_type }}" == '3') {
+            $("#upstream-file").addClass("active");
+        } else if ("{{ result.conf_type }}" == '4') {
+            $("#template-file").addClass("active");
+        } if ("{{ result.conf_type }}" == '5') {
+            $("#allow-file").addClass("active");
+        }
+
+    function upload_file(file_id) {
+        var t = confirm("确定上传？");
+        if (t == true) {
+            $.ajax({
+                type: "POST",
+                dataType: "json",
+                url: "/configfile/upload/",
+                data: {"file_id": file_id, "csrfmiddlewaretoken": "{{ csrf_token }}"},
+                success: function (data) {
+                    if (data.code != 200) {
+                        alert(data.msg);
+                        window.location = "/configfile/edit/" + file_id + "/";
+                    } else {
+                        alert("文件上传、检测、重载成功.");
+                        window.location = "/configfile/edit/" + file_id + "/";
+                    }
+                }
+            })
+        } else {
+            window.location = "/configfile/edit/" + file_id + "/";
+        }
+    }
+
+    </script>
+{% endblock %}

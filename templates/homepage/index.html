@@ -1,0 +1,137 @@
+{% extends "base.html" %}
+
+
+{% load staticfiles %}
+{% load i18n %}
+
+{% block css%}
+    <link rel="stylesheet" href="{% static "bootstrap/css/bootstrap.min.css" %}">
+    <link rel="stylesheet" href="{% static "css/font-awesome.min.css" %}">
+    <link rel="stylesheet" href="{% static "dist/css/AdminLTE.min.css" %}">
+    <link rel="stylesheet" href="{% static "dist/css/skins/_all-skins.min.css" %}">
+    <link rel="stylesheet" href="{% static "plugins/iCheck/flat/blue.css" %}">
+    <link rel="stylesheet" href="{%static "css/ionicons.min.css" %}">
+    <link rel="stylesheet" href="{% static "plugins/datatables/dataTables.bootstrap.css"%}">
+
+    <link rel="stylesheet" href="{% static "css/select2.min.css"%}">
+    <link rel="stylesheet" href="{% static "css/style.css"%}">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="{% static "js/html5shiv.min.js" %}"></script>
+    <script src="{% static "js/respond.min.js" %}"></script>
+    <![endif]-->
+    <style>
+        .nav-tabs {
+            background-color: #eee;
+        }
+        .form-group {
+            margin-top: 25px;
+        }
+    </style>
+{% endblock %}
+{% block content %}
+    <div class="fakeloader"></div>
+    <div class="content-wrapper">
+    <section class="content-header">
+        <h1>
+            线上nginx管理平台
+        </h1>
+
+        <ol class="breadcrumb">
+              <li class="active"><a href="/"><i class="fa fa-dashboard"></i> 首页</a></li>
+        </ol>
+    </section>
+
+    <section class="content">
+
+        <div class="row">
+            <div class="box-body">
+                <div>
+                    <div class="alert alert-success alert-dismissable">
+                        <h4>线上nginxeetest管理使用须知：</h4>
+                        <br/>
+                        <p>1、提供服务：线上nginx检测、重载、启动，配置文件增、删、改操作；</p>
+                        <p>2、可配置通知人员和通知方式；</p>
+                        <p>3、记录历史操作的信息；</p>
+                        <p>4、线上机器上的文件被修改，服务被重启时，根据配置的通知信息通知到指定人员；</p>
+                        <p>5、若未输入过滤条件，即显示全部数据；</p>
+                        <p>6、【重要】配置文件只能由一人修改操作，点击“编辑”获得此文件权限，必须点击“返回”释放操作权限；</p>
+                        <p>7、【重要】切换不同的环境，需要在首页选择，每个页面显示所处环境，注意每次操作的环境；</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-3 col-xs-6">
+                <div id="pre" class="small-box bg-aqua"
+                     onclick="window.open('/server/all/1/', '_self')">
+                    <div class="inner">
+                        <h3>预发环境</h3>
+                        <p>预发环境</p>
+                    </div>
+                    <div class="icon">
+                        <i class="ion ion-gear-a"></i>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-3 col-xs-6">
+                <div id="pro_out" class="small-box bg-blue"
+                     onclick="window.open('/server/all/2/', '_self')">
+                    <div class="inner">
+                        <h3>线上外部</h3>
+                        <p>线上外部</p>
+                    </div>
+                    <div class="icon">
+                        <i class="ion ion-gear-a"></i>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-3 col-xs-6">
+                <div id="pro_in" class="small-box bg-yellow"
+                     onclick="window.open('/server/all/3/', '_self')">
+                    <div class="inner">
+                        <h3>线上内网</h3>
+                        <p>线上内网</p>
+                    </div>
+                    <div class="icon">
+                        <i class="ion ion-gear-a"></i>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-3 col-xs-6">
+                <div id="others" class="small-box bg-red"
+                     onclick="window.open('/server/all/4/', '_self')">
+                    <div class="inner">
+                        <h3>其他</h3>
+                        <p>其他</p>
+                    </div>
+                    <div class="icon">
+                        <i class="ion ion-gear-a"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+{% endblock %}
+
+{% block js %}
+<script src="{%static "plugins/jQuery/jQuery-2.1.4.min.js" %}"></script>
+<script src="{% static "js/jquery-ui.min.js" %}"></script>
+<script src="{%static "dist/js/app.min.js" %}"></script>
+<script src="{% static "plugins/datatables/jquery.dataTables.min.js" %}"></script>
+<script src="{% static "plugins/datatables/dataTables.bootstrap.min.js" %}"></script>
+<script src="{% static "plugins/iCheck/icheck.min.js" %}"></script>
+<script src="{% static "js/myqccr.js" %}"></script>
+<script src="{% static "js/select2.min.js" %}"></script>
+<script src="{% static "js/jquery.Qalert.js" %}"></script>
+<script type="text/javascript">
+    $("#servicedeskmenu").addClass("active");
+</script>
+{% endblock %}

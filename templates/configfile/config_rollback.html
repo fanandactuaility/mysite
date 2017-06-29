@@ -1,0 +1,213 @@
+{% extends ip_env|yesno:"" %}
+
+
+{%load staticfiles%}
+
+{% block css%}
+    <link rel="stylesheet" href="{% static "bootstrap/css/bootstrap.min.css" %}" xmlns="http://www.w3.org/1999/html"
+          xmlns="http://www.w3.org/1999/html" xmlns="http://www.w3.org/1999/html">
+	<link rel="stylesheet" href="{% static "css/font-awesome.min.css" %}">
+	<link rel="stylesheet" href="{% static "dist/css/AdminLTE.min.css" %}">
+	<link rel="stylesheet" href="{% static "dist/css/skins/_all-skins.min.css" %}">
+	<link rel="stylesheet" href="{% static "plugins/iCheck/flat/blue.css" %}">
+	<link rel="stylesheet" href="{%static "css/ionicons.min.css" %}">
+ 	<link rel="stylesheet" href="{% static "plugins/datatables/dataTables.bootstrap.css"%}">
+    <link rel="stylesheet" href="{%static "css/select2.min.css" %}">
+{#	<link href="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/css/select2.min.css" rel="stylesheet" />#}
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="{% static "js/html5shiv.min.js" %}"></script>
+        <script src="{% static "js/respond.min.js" %}"></script>
+    <![endif]-->
+    <style type="text/css">
+    .head-box{min-height:180px;}
+    #svn-content{display: none}
+    .notes {
+        background-attachment: local;
+        background-image: linear-gradient(to right, white 10px, transparent 10px),
+                          linear-gradient(to left, white 10px, transparent 10px),
+                          repeating-linear-gradient(white, white 30px, #ccc 30px, #ccc 31px, white 31px);
+                          repeating-linear-gradient(white, white 30px, #ccc 30px, #ccc 31px, white 31px);
+    line-height: 25px;
+{#    padding: 8px 10px;#}
+}
+    </style>
+{% endblock %}
+{% block content %}
+    <section class="content-wrapper">
+        <section class="content-header">
+          <h1>
+              <p>所处环境: <font color="red">{{ env_chinese }}</font></p>
+              <p>回滚文件: {{ result.file_name }}</p>
+              <p>路径: {{ result.file_dir }}</p>
+          </h1>
+          <ol class="breadcrumb">
+              <li class="active"><a href="/"><i class="fa fa-dashboard"></i> 首页</a></li>
+              <li>回滚文件</li>
+          </ol>
+        </section>
+
+        <section class="content">
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="box-body">
+{#                        <form class="form-horizontal" name="edit_record" role="form" method="post">#}
+{#                            {% csrf_token %}#}
+                            <script>
+                                function select(s) {
+                                    $.ajax({
+                                        type: "POST",
+                                        dataType: "json",
+                                        url: "/configfile/select/",
+                                        data: {"file_id": s,
+                                               'csrfmiddlewaretoken': '{{ csrf_token }}' },
+                                        success: function (result) {
+                                            if (result.code!=200){
+                                                alert(result.msg);
+                                            } else {
+                                                content.value = result.data.content;
+                                            }
+                                        }
+                                    });
+                                }
+                            </script>
+                            <input type="hidden" name="id" value="{{ result.id }}">
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">请选择回滚版本:</label>
+                                <div class="col-xs-5 align-left">
+                                    <select name="history_file" id="history_file" onchange="select(this.options[this.options.selectedIndex].value)" class="form-control select2" style="width: 350px;">
+                                        {% for item in history_files %}
+                                            {% if item.file_name == history_file.file_name %}
+                                                <option selected="selected" value="{{ item.id }}">
+                                                    {{ item.file_name }}
+                                                </option>
+                                            {% else %}
+                                                <option value="{{ item.id }}">
+                                                    {{ item.file_name }}
+                                                </option>
+                                            {% endif %}
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-sm-8 control-label">回滚版本文件内容:</label>
+                                <textarea name="content" id="content" rows="{{ row_content }}" class="notes" style="width: 100%;font-size:13pt;line-height:23pt">{{ history_file.content }}</textarea>
+                            </div>
+
+                            <div class="text-center">
+                                <button class="btn btn-primary" role="button" name="file_update" onclick="edit_file({{ result.id }})"><i class="fa fa-fw fa-check"></i>回滚</button>
+                                <a href="/configfile/show/{{ ip_env_base }}/{{ result.conf_type }}/" class="btn btn-primary" role="button"><i class="fa fa-fw fa-check"></i>返回</a>
+                            </div>
+{#                        </form>#}
+                    </div>
+                </div>
+            </div>
+            <div class="modal fade" id="diff_info" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                <div class="modal-dialog" style="width: 1000px">
+                    <div class="modal-content">
+                        <div class="diff_detail" style="display: inline;">
+                            <table id="diff_detail" class="table table-bordered table-striped">
+                                <input type="hidden" id="install_record_id" value="0">
+                                <thead>
+                                <tr>
+                                    <th>文件名称：{{ result.file_name }}</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="modal-footer">
+                            <button class="btn btn-primary" role="button" name="file_update" onclick="save_file({{ result.id }})"><i class="fa fa-fw fa-check"></i>确定回滚</button>
+                            <a href="/configfile/rollback/{{ result.id }}/" class="btn btn-primary" role="button">取消回滚</a>
+                        </div>
+                    </div><!-- /.modal-content -->
+                </div><!-- /.modal -->
+            </div>
+        </section>
+    </section><!-- /.content -->
+{% endblock %}
+{% block js %}
+    <script src="{%static "plugins/jQuery/jQuery-2.1.4.min.js" %}"></script>
+    <script src="{%static "js/auto-line-number.js" %}"></script>
+    <script src="{% static "js/jquery-ui.min.js" %}"></script>
+    <script src="{%static "dist/js/app.min.js" %}"></script>
+    <script src="{% static "plugins/datatables/jquery.dataTables.min.js" %}"></script>
+    <script src="{% static "plugins/datatables/dataTables.bootstrap.min.js" %}"></script>
+    <script src="{% static "js/myqccr.js" %}"></script>
+    <script src="{% static "js/select2.min.js" %}"></script>
+	<script src="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script>
+        $("#content").setTextareaCount({
+		    color: "#",
+		    display: "inline-block"
+	    });
+        $('select').select2();
+        $("#configmenu").addClass("active");
+        if ("{{ result.conf_type }}" == '1') {
+            $("#master-file").addClass("active");
+        } else if ("{{ result.conf_type }}" == '2') {
+            $("#vhosts-file").addClass("active");
+        } else if ("{{ result.conf_type }}" == '3') {
+            $("#upstream-file").addClass("active");
+        } else if ("{{ result.conf_type }}" == '4') {
+            $("#template-file").addClass("active");
+        } if ("{{ result.conf_type }}" == '5') {
+            $("#allow-file").addClass("active");
+        }
+
+    function edit_file(file_id) {
+        var content = $("#content").val();
+        $.ajax({
+            type: "POST",
+            dataType: "json",
+            url: "/configfile/update/",
+            data: {"file_id": file_id, "file_content": content,
+                   'csrfmiddlewaretoken': '{{ csrf_token }}' },
+            success: function (result) {
+                if (result.code!=200){
+                    alert(result.msg);
+                } else {
+                    show_diff(result.data);
+                }
+            }
+        })
+    }
+
+    function show_diff(data) {
+        $('#diff_info').modal('show');
+        var diff_detail_html = $("#diff_info .diff_detail tbody");
+        diff_detail_html.html('');
+        var show_info = '';
+        for (var i = 0; i < data.length; i++) {
+            if (data[i].startsWith('-')) {
+                show_info = show_info + '<tr><td bgcolor="#FFD2D2">' + data[i] + "</td></tr>";
+            } else {
+                show_info = show_info + '<tr><td bgcolor="#DFFFDF">' + data[i] + "</td></tr>";
+            }
+        }
+        diff_detail_html.append(show_info);
+    }
+
+    function save_file(file_id) {
+        $.ajax({
+            type: "POST",
+            dataType: "json",
+            url: "/configfile/save_update/",
+            data: {"file_id": file_id,
+                   "csrfmiddlewaretoken": "{{ csrf_token }}" },
+            success: function (data) {
+                if (data.code != 200) {
+                    alert(data.msg);
+                } else {
+                    window.location = "/configfile/edit_upload/" + file_id + "/";
+                }
+            }
+        })
+    }
+    </script>
+{% endblock %}

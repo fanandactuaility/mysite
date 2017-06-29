@@ -1,0 +1,143 @@
+/* -------------------------------
+   8.0 Update - V1.2
+------------------------------- */
+
+/* 8.1 Theme Panel Setting */
+
+.theme-panel {
+    position: fixed;
+    right: -175px;
+    top: 150px;
+    z-index: 1020;
+    background: #fff;
+    padding: 15px;
+    box-shadow: 0 0 2px rgba(0,0,0,0.4);
+    -webkit-box-shadow: 0 0 2px rgba(0,0,0,0.4);
+    -moz-box-shadow: 0 0 2px rgba(0,0,0,0.4);
+    width: 175px;
+    -webkit-transition: right .2s linear;
+    -moz-transition: right .2s linear;
+    transition: right .2s linear;
+}
+.theme-panel.active {
+    right: 0;
+}
+.theme-panel .theme-list {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+.theme-panel .theme-list + .theme-list {
+    margin-top: 10px;
+}
+.theme-panel .theme-list > li {
+    float: left;
+}
+.theme-panel .theme-list > li + li {
+    margin-left: 5px;
+}
+.theme-panel .theme-list > li > a {
+    text-decoration: none;
+}
+.theme-panel .theme-list > li.active > a  {
+    position: relative;
+}
+.theme-panel .theme-list > li.active > a:before {
+    content: '\f00c';
+    font-family: FontAwesome;
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    font-size: 14px;
+    color: #fff;
+    opacity: 0.4;
+    filter: alpha(opacity=40);
+    text-align: center;
+}
+.theme-panel .theme-list > li.active > a.bg-white:before {
+    color: #666;
+}
+.theme-panel .theme-list > li > a {
+    width: 20px;
+    height: 20px;
+    border-radius: 3px;
+    display: block;
+    -webkit-transition: all .2s linear;
+    -moz-transition: all .2s linear;
+    transition: all .2s linear;
+}
+.theme-panel .theme-list > li > a:hover,
+.theme-panel .theme-list > li > a:focus {
+    opacity: 0.6;
+    filter: alpha(opacity=60);
+}
+.theme-panel .theme-collapse-btn {
+    position: absolute;
+    left: -30px;
+    top: 10%;
+    margin-top: -15px;
+    width: 30px;
+    height: 30px;
+    line-height: 30px;
+    font-size: 18px;
+    color: #333;
+    background: #fff;
+    border-radius: 4px 0 0 4px;
+    text-align: center;
+    box-shadow: -1px 0px 3px -1px rgba(0,0,0,0.4);
+    -webkit-box-shadow: -1px 0px 3px -1px rgba(0,0,0,0.4);
+    -moz-box-shadow: -1px 0px 3px -1px rgba(0,0,0,0.4);
+}
+.theme-panel .theme-panel-content {
+    margin: -15px;
+    padding: 15px;
+    background: #fff;
+    position: relative;
+    z-index: 1020;
+}
+.theme-panel.active .theme-collapse-btn .fa:before {
+    content: '\f00d';
+}
+.theme-panel .theme-list a.bg-white {
+    border: 1px solid #e2e7eb;
+}
+.theme-panel .control-label {
+    line-height: 30px;
+}
+.theme-panel .control-label.double-line {
+    line-height: 15px;
+}
+.theme-panel .divider {
+    height: 1px;
+    margin: 15px 0;
+    background: #f2f2f2;
+}
+
+
+/* 8.2 Powerange Slider Setting */
+
+.slider-wrapper {
+    padding: 15px 30px !important;
+    margin-bottom: 10px !important;
+}
+.slider-wrapper.slider-without-range {
+    padding: 15px 0 !important;
+}
+.slider-wrapper.slider-vertical {
+    padding-left: 15px !important;
+    padding-right: 15px !important;
+}
+.range-min, .range-max {
+    color: #242a30 !important;
+}
+.range-handle {
+    cursor: pointer !important;
+}
+.range-quantity { background: #00acac !important; }
+.red .range-quantity { background: #ff5b57 !important; }
+.blue .range-quantity { background: #348fe2 !important; }
+.purple .range-quantity { background: #727cb6 !important; }
+.orange .range-quantity { background: #f59c1a !important; }
+.black .range-quantity { background: #2d353c !important; }

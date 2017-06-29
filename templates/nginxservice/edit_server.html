@@ -1,0 +1,114 @@
+{% extends ip_env|yesno:"" %}
+
+{%load staticfiles%}
+
+{% block css%}
+    <link rel="stylesheet" href="{% static "bootstrap/css/bootstrap.min.css" %}" xmlns="http://www.w3.org/1999/html"
+          xmlns="http://www.w3.org/1999/html" xmlns="http://www.w3.org/1999/html">
+	<link rel="stylesheet" href="{% static "css/font-awesome.min.css" %}">
+	<link rel="stylesheet" href="{% static "dist/css/AdminLTE.min.css" %}">
+	<link rel="stylesheet" href="{% static "dist/css/skins/_all-skins.min.css" %}">
+	<link rel="stylesheet" href="{% static "plugins/iCheck/flat/blue.css" %}">
+	<link rel="stylesheet" href="{%static "css/ionicons.min.css" %}">
+ 	<link rel="stylesheet" href="{% static "plugins/datatables/dataTables.bootstrap.css"%}">
+    <link rel="stylesheet" href="{%static "css/select2.min.css" %}">
+{#	<link href="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/css/select2.min.css" rel="stylesheet" />#}
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="{% static "js/html5shiv.min.js" %}"></script>
+        <script src="{% static "js/respond.min.js" %}"></script>
+    <![endif]-->
+    <style>
+    .head-box{min-height:180px;}
+    #svn-content{display: none}
+    </style>
+{% endblock %}
+{% block content %}
+    <div class="content-wrapper">
+        <section class="content-header">
+          <h1>
+              <p>所处环境: <font color="red">{{ env_chinese }}</font></p>
+              <p>修改nginx server</p>
+          </h1>
+          <ol class="breadcrumb">
+              <li class="active"><a href="/"><i class="fa fa-dashboard"></i> 首页</a></li>
+              <li>修改nginx server</li>
+          </ol>
+        </section>
+
+        <section class="content">
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="box">
+                        <div class="box-header">
+                            <h3 class="box-title">记录</h3>
+                        </div><!-- /.box-header -->
+                        <div class="box-body">
+                        <form class="form-horizontal" name="edit_environment_record" role="form" method="post">
+                            {% csrf_token %}
+                            <input type="hidden" name="id" value="{{ server.id }}">
+                            <div class="form-group">
+                                <label class="col-sm-4 control-label">服务器地址</label>
+
+                                <div class="col-sm-6">
+                                    <input type="text" name="ip" id="ip" class="form-control" value="{{ server.ip }}" required>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-sm-4 control-label">服务器环境名称</label>
+
+                                <div class="col-sm-6">
+                                    <input type="text" name="ip_msg" id="ip_msg" class="form-control" value="{{ server.ip_msg }}" readonly>
+                                </div>
+                            </div>
+
+                            <div class="text-center">
+                                <button class="btn btn-primary" role="button" name="server_update" onclick="edit_server({{ server.id }})"><i class="fa fa-fw fa-check"></i>保存</button>
+                                <a href="/server/all/{{ ip_env_base }}/" class="btn btn-primary" role="button"><i class="fa fa-fw fa-check"></i>返回</a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section><!-- /.content -->
+</div><!-- /.content-wrapper -->
+{% endblock %}
+{% block js %}
+    <script src="{%static "plugins/jQuery/jQuery-2.1.4.min.js" %}"></script>
+    <script src="{% static "js/jquery-ui.min.js" %}"></script>
+    <script src="{%static "dist/js/app.min.js" %}"></script>
+    <script src="{% static "plugins/datatables/jquery.dataTables.min.js" %}"></script>
+    <script src="{% static "plugins/datatables/dataTables.bootstrap.min.js" %}"></script>
+    <script src="{% static "js/myqccr.js" %}"></script>
+    <script src="{% static "js/select2.min.js" %}"></script>
+    <script>
+        $('select').select2();
+        $("#nginxservicemenu").addClass("active");
+        $("#nginx-service").addClass("active");
+
+    function edit_server(server_id) {
+        var ip = $("#ip").val();
+        var c = confirm("确定保存修改？");
+        if (c==true) {
+            $.ajax({
+                type: "POST",
+                dataType: "json",
+                url: "/server/update/",
+                data: {"server_id": server_id, "ip": ip,
+                       'csrfmiddlewaretoken': '{{ csrf_token }}' },
+                success: function (result) {
+                    if (result.code!=200){
+                        alert(result.msg);
+                    } else {
+                        window.location = "/server/all/{{ ip_env_base }}/"
+                    }
+                }
+            })
+        }
+    }
+    </script>
+{% endblock %}

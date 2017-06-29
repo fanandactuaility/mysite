@@ -1,0 +1,64 @@
+
+{% extends "base.html" %}
+
+{% load staticfiles %}
+{% load i18n %}
+
+{% block css%}
+    <link rel="stylesheet" href="{% static "bootstrap/css/bootstrap.min.css" %}">
+    <link rel="stylesheet" href="{% static "css/font-awesome.min.css" %}">
+    <link rel="stylesheet" href="{% static "dist/css/AdminLTE.min.css" %}">
+    <link rel="stylesheet" href="{% static "dist/css/skins/_all-skins.min.css" %}">
+    <link rel="stylesheet" href="{% static "plugins/iCheck/flat/blue.css" %}">
+    <link rel="stylesheet" href="{%static "css/ionicons.min.css" %}">
+    <link rel="stylesheet" href="{% static "plugins/datatables/dataTables.bootstrap.css"%}">
+
+    <link rel="stylesheet" href="{% static "css/select2.min.css"%}">
+    <link rel="stylesheet" href="{% static "css/style.css"%}">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="{% static "js/html5shiv.min.js" %}"></script>
+    <script src="{% static "js/respond.min.js" %}"></script>
+    <![endif]-->
+{% endblock %}
+
+{% block content %}
+      <div class="content-wrapper">
+        <!-- Content Header (Page header) -->
+        <section class="content-header">
+          <h1>
+            404错误
+          </h1>
+          <ol class="breadcrumb">
+            <li><a href="/"><i class="fa fa-dashboard"></i> 首页</a></li>
+          </ol>
+        </section>
+
+        <!-- Main content -->
+        <section class="content">
+          <!-- Small boxes (Stat box) -->
+          <div class="error-page">
+            <h2 class="headline text-yellow"> 404</h2>
+            <div class="error-content">
+              <h3><i class="fa fa-warning text-yellow"></i> 请求不可达.</h3>
+              <p>对不起，有错误信息如下：</p>
+              <p>
+                <font color="red">{{ err_msg }}</font>
+              </p>
+              <p>
+                  你需要返回首页<a href="/">首页</a>重新选择环境再次进行操作。
+              </p>
+
+            </div><!-- /.error-content -->
+          </div><!-- /.error-page -->
+        </section><!-- /.content -->
+      </div><!-- /.content-wrapper -->
+
+{%endblock%}
+
+{% block js%}
+    <script src="{% static "js/jquery-ui.min.js" %}"></script>
+    <script src="{%static "dist/js/app.min.js" %}"></script>
+{% endblock %}

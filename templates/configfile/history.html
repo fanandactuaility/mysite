@@ -1,0 +1,119 @@
+{% extends ip_env|yesno:"" %}
+
+{% load staticfiles %}
+{% load i18n %}
+
+{% block css%}
+    <link rel="stylesheet" href="{% static "bootstrap/css/bootstrap.min.css" %}">
+    <link rel="stylesheet" href="{% static "css/font-awesome.min.css" %}">
+    <link rel="stylesheet" href="{% static "dist/css/AdminLTE.min.css" %}">
+    <link rel="stylesheet" href="{% static "dist/css/skins/_all-skins.min.css" %}">
+    <link rel="stylesheet" href="{% static "plugins/iCheck/flat/blue.css" %}">
+    <link rel="stylesheet" href="{%static "css/ionicons.min.css" %}">
+    <link rel="stylesheet" href="{% static "plugins/datatables/dataTables.bootstrap.css"%}">
+
+    <link rel="stylesheet" href="{% static "css/select2.min.css"%}">
+    <link rel="stylesheet" href="{% static "css/style.css"%}">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="{% static "js/html5shiv.min.js" %}"></script>
+    <script src="{% static "js/respond.min.js" %}"></script>
+    <![endif]-->
+    <style>
+        .nav-tabs {
+            background-color: #eee;
+        }
+        .form-group {
+            margin-top: 25px;
+        }
+    </style>
+{% endblock %}
+{% block content %}
+    <div class="fakeloader"></div>
+    <div class="content-wrapper">
+    <section class="content-header">
+        <h1>
+            <p>所处环境: <font color="red">{{ env_chinese }}</font></p>
+            <p>操作记录</p>
+        </h1>
+
+        <ol class="breadcrumb">
+            <li class="active"><a href="/"><i class="fa fa-dashboard"></i> 首页</a></li>
+            <li>操作记录</li>
+        </ol>
+
+    </section>
+
+    <section class="content">
+        <div class="row">
+            <div class="col-xs-12">
+                <div id="project-content" class="nav-tabs-custom">
+                    <div class="tab-content">
+                        <div  id="project_manage">
+                            <div class="box-body">
+                                <table id="HistoryRecord" class="table table-bordered table-striped">
+                                    <thead>
+                                    <tr>
+                                        <th>文件名称</th>
+                                        <th>操作人</th>
+                                        <th>执行操作</th>
+                                        <th>操作时间</th>
+                                        <th>操作结果</th>
+                                        <th>操作详情</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    {% if result %}
+                                        {% for item in result %}
+                                        <tr role="row" class="">
+                                            <td width="10%">{{ item.file_name }}</td>
+                                            <td width="10%">{{ item.user_name }}</td>
+                                            <td width="13%">{{ item.action }}</td>
+                                            <td width="14%">{{ item.gmt_created |date:"Y-m-d H:i:s"}}</td>
+                                            <td width="8%">
+                                                {% if item.flag %}
+                                                    <span class="label label-success">成功</span>
+                                                {% else %}
+                                                    <span class="label label-danger">失败</span>
+                                                {% endif %}
+                                            </td>
+                                            <td width="45%">
+                                                {% for j_item in item.content_list %}
+                                                    {{ j_item }} <br/>
+                                                {% endfor %}
+                                            </td>
+                                        </tr>
+                                        {% endfor %}
+                                    {% endif %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+{% endblock %}
+
+{% block js %}
+<script src="{%static "plugins/jQuery/jQuery-2.1.4.min.js" %}"></script>
+<script src="{% static "js/jquery-ui.min.js" %}"></script>
+<script src="{%static "dist/js/app.min.js" %}"></script>
+<script src="{% static "plugins/datatables/jquery.dataTables.min.js" %}"></script>
+<script src="{% static "plugins/datatables/dataTables.bootstrap.min.js" %}"></script>
+<script src="{% static "plugins/iCheck/icheck.min.js" %}"></script>
+<script src="{% static "js/myqccr.js" %}"></script>
+<script src="{% static "js/select2.min.js" %}"></script>
+<script src="{% static "js/jquery.Qalert.js" %}"></script>
+<script type="text/javascript">
+    $('#HistoryRecord').DataTable({
+        "order": [[3, 'desc']]
+    });
+</script>
+{% endblock %}
+
+

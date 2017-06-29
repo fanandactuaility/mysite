@@ -1,0 +1,21 @@
+.select2-container--default .select2-selection--multiple .select2-selection__choice {
+    color: #333;
+}
+
+#userprofile .dropdown:hover .dropdown-menu {
+    display: block;
+}
+
+#userprofile .dropdown-toggle {
+    color: #666666;
+    padding: 7px;
+    border: 1px solid #ddd;
+}
+
+.skin-blue .main-header .navbar .dropdown-menu li a {
+    color: #777;
+}
+
+.tooltip-inner {
+    max-width: 500px;
+}

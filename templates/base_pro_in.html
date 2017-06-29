@@ -1,0 +1,161 @@
+{% load static %}
+{% load cache %}
+{% load staticfiles %}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="Access-Control-Allow-Origin" content="*" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>{% block title %}线上nginx管理平台{% endblock %}</title>
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <link rel="shortcut icon" type="image/png" href="/static/image/favicon.ico"/>
+    <link rel="stylesheet" href="{% static "bootstrap/css/bootstrap.min.css" %}">
+    <link rel="stylesheet" href="{% static "css/font-awesome.min.css" %}">
+    <link rel="stylesheet" href="{% static "dist/css/AdminLTE.min.css" %}">
+    <link rel="stylesheet" href="{% static "dist/css/skins/_all-skins.min.css" %}">
+    <link rel="stylesheet" href="{% static "plugins/iCheck/flat/blue.css" %}">
+    <link rel="stylesheet" href="{% static "css/ionicons.min.css" %}">
+    <script src="{% static "plugins/jQuery/jQuery-2.1.4.min.js" %}"></script>
+    <script src="{% static "bootstrap/js/bootstrap.js" %}"></script>
+    <script src="{% static "js/jquery.noty.packaged.min.js" %}"></script>
+    <script src="{% static "js/myqccr.js" %}"></script>
+    {% block css %}
+    {% endblock %}
+    <style>
+        .select2-container--default .select2-selection--multiple .select2-selection__choice {
+            color: #333;
+        }
+        #query span.select2-selection__placeholder {
+            line-height: 35px;
+        }
+    </style>
+</head>
+
+  <!-- Left side column. contains the logo and sidebar -->
+  <aside class="main-sidebar" style="z-index: 98">
+    <!-- sidebar: style can be found in sidebar.less -->
+    <section class="sidebar">
+      <!-- Sidebar user panel -->
+      <div class="user-panel">
+        <div class="pull-left image">
+          <img src="{% static "dist/img/user2-160x160.jpg" %}" class="img-circle" alt="User Image">
+        </div>
+        <div class="pull-left info">
+          <p>{{request.user.employeeName}}</p>
+          <a href="#"><i class="fa fa-circle text-success"></i> {{request.user.deptNames}}</a>
+        </div>
+      </div>
+      <!-- search form -->
+      <form action="#" method="get" class="sidebar-form">
+        <div class="input-group">
+          <input type="text" name="q" class="form-control" placeholder="Search...">
+          <span class="input-group-btn">
+            <button type="submit" name="search" id="search-btn" class="btn btn-flat"><i class="fa fa-search"></i></button>
+          </span>
+        </div>
+      </form>
+      <!-- /.search form -->
+      <!-- sidebar menu: : style can be found in sidebar.less -->
+      <ul class="sidebar-menu">
+        <li class="header">MAIN NAVIGATION</li>
+
+        <li id="servicedeskmenu" class="treeview">
+          <a href="/">
+            <i class="fa fa-dashboard"></i> <span>首页</span>
+          </a>
+        </li>
+        <li id="configmenu" class="treeview">
+            <a href="#">
+                <i class="fa fa-key"></i>
+                <span>配置管理</span>
+                <span class="label label-primary pull-right">0</span>
+            </a>
+            <ul class="treeview-menu">
+                <li id="master-file"><a href="/configfile/show/3/1/"><i class="fa fa-circle-o"></i> 主配置文件</a>
+                </li>
+            </ul>
+            <ul class="treeview-menu">
+                <li id="vhosts-file"><a href="/configfile/show/3/2/"><i class="fa fa-circle-o"></i> vhosts文件</a>
+                </li>
+            </ul>
+            <ul class="treeview-menu">
+                <li id="upstream-file"><a href="/configfile/show/3/3/"><i class="fa fa-circle-o"></i> upstream文件</a>
+                </li>
+            </ul>
+            <ul class="treeview-menu">
+                <li id="template-file"><a href="/configfile/show/3/4/"><i class="fa fa-circle-o"></i> 模板文件</a>
+                </li>
+            </ul>
+            <ul class="treeview-menu">
+                <li id="allow-file"><a href="/configfile/show/3/5/"><i class="fa fa-circle-o"></i> 限制管理文件</a>
+                </li>
+            </ul>
+        </li>
+        <li id="nginxservicemenu" class="treeview">
+            <a href="#">
+                <i class="fa fa-key"></i>
+                <span>nginx服务管理</span>
+                <span class="label label-primary pull-right">0</span>
+            </a>
+            <ul class="treeview-menu">
+                <li id="nginx-service"><a href="/server/all/3/"><i class="fa fa-circle-o"></i> nginx服务</a>
+                </li>
+            </ul>
+        </li>
+        <li id="noticemenu" class="treeview">
+            <a href="#">
+                <i class="fa fa-key"></i>
+                <span>通知管理</span>
+                <span class="label label-primary pull-right">0</span>
+            </a>
+            <ul class="treeview-menu">
+                <li id="people-all"><a href="/notice/people/all/3/"><i class="fa fa-circle-o"></i> 人员列表</a>
+                </li>
+            </ul>
+            <ul class="treeview-menu">
+                <li id="notice-type"><a href="/notice/type/all/3/"><i class="fa fa-circle-o"></i> 通知方式</a>
+                </li>
+            </ul>
+            <ul class="treeview-menu">
+                <li id="notice-history"><a href="/notice/history/all/3/"><i class="fa fa-circle-o"></i> 通知记录</a>
+                </li>
+            </ul>
+        </li>
+        <li id="historymenu" class="treeview">
+            <a href="/configfile/history/3/">
+                <i class="fa fa-key"></i>
+                <span>操作记录</span>
+            </a>
+        </li>
+      </ul>
+    </section>
+    <!-- /.sidebar -->
+  </aside>
+<body class="hold-transition skin-blue sidebar-mini">
+<div class="wrapper">
+    {% include "base_header.html" %}
+{#    {% include "base_sidebar_pro_in.html" %}#}
+    {% block content %}
+    {% endblock %}
+    {% include "base_footer.html" %}
+    {% block js %}
+    {% endblock %}
+</div>
+<script>
+    $(function () {
+        var menu_list = $("aside.main-sidebar .sidebar-menu").find('.treeview');
+        for(var i=0; i<menu_list.length; i++){
+            var menu = $(menu_list[i]);
+            var num_label = menu.find('a span.label');
+            if(num_label.length>0){
+                var sub_menu_num = menu.find('ul.treeview-menu li').length;
+                num_label.html(sub_menu_num);
+            }
+        }
+        $(".hide_js").hide();
+    })
+</script>
+</body>
+
+</html>

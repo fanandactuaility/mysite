@@ -37,7 +37,8 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'polls'
+    'polls',
+    'learnmodels',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -82,7 +83,7 @@ DATABASES = {
     }
 }
 TEMPLATE_DIRS = (
-    '/data/yunweiautoproject/mysite/mysite/templates/',
+    '/home/autodev/mysite/mysite/templates/',
 )
 
 

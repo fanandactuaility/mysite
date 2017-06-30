@@ -25,6 +25,7 @@ class Choice(models.Model):
     def __unicode__(self):
         return self.choice_text
 
+<<<<<<< HEAD
 class Person(models.Model):
     first_name = models.CharField(max_length=30)
     last_name = models.CharField(max_length=30)
@@ -106,3 +107,7 @@ class Persion(models.Model):
 
 
 
+=======
+class Getmessage(models.Model):
+    name = models.CharField(max_length=100)
+>>>>>>> d802b4efb6387a26378d5c82c0a747547d91b5bc
